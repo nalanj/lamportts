@@ -7,6 +7,10 @@ type Counter []byte
 
 // Increment returns a copy of the counter with its value incremented
 func (c Counter) Increment() Counter {
+	if len(c) == 0 {
+		return Counter{0x01}
+	}
+
 	out := make([]byte, len(c)+1)
 
 	copy(out[1:], c)
@@ -37,7 +41,7 @@ func (c Counter) Increment() Counter {
 	return out
 }
 
-// Compare returns <0 if a < b,  >0 if a > b, and 0 if a == b
-func Compare(a, b Counter) int {
+// CompareCounters returns <0 if a < b,  >0 if a > b, and 0 if a == b
+func CompareCounters(a, b Counter) int {
 	return bytes.Compare(a, b)
 }

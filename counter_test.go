@@ -33,7 +33,7 @@ func TestIncrement(t *testing.T) {
 	}
 }
 
-func TestCompare(t *testing.T) {
+func TestCounterCompare(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -64,7 +64,7 @@ func TestCompare(t *testing.T) {
 	for _, tC := range testCases {
 		tC := tC
 		t.Run(tC.desc, func(t *testing.T) {
-			assert.Equal(t, tC.expect, Compare(tC.a, tC.b))
+			assert.Equal(t, tC.expect, CompareCounters(tC.a, tC.b))
 		})
 	}
 }
