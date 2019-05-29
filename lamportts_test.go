@@ -41,13 +41,13 @@ func TestAfter(t *testing.T) {
 			desc:      "counter equal, replica before",
 			ts:        rep0Count1,
 			compareTo: repNon0Count1,
-			expect:    -1,
+			expect:    0,
 		},
 		{
 			desc:      "counter equal, replica after",
 			ts:        repNon0Count1,
 			compareTo: rep0Count1,
-			expect:    1,
+			expect:    0,
 		},
 		{
 			desc:      "counter equal, replica equal",

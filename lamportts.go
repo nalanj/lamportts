@@ -1,8 +1,6 @@
 package lamportts
 
 import (
-	"bytes"
-
 	"github.com/gofrs/uuid"
 )
 
@@ -46,10 +44,5 @@ func (t *Timestamp) Update(compareTo *Timestamp) *Timestamp {
 
 // Compare returns > 0 if a > b, < 0 if a < b, or 0 if a == b
 func Compare(a, b *Timestamp) int {
-	counterCompare := CompareCounters(a.Counter, b.Counter)
-
-	if counterCompare == 0 {
-		return bytes.Compare(a.ReplicaID[:], b.ReplicaID[:])
-	}
-	return counterCompare
+	return CompareCounters(a.Counter, b.Counter)
 }
