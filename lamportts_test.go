@@ -69,3 +69,49 @@ func TestAfter(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdate(t *testing.T) {
+	t.Parallel()
+
+	rep0Count0 := &Timestamp{
+		ReplicaID: uuid.UUID{},
+		Counter:   Counter{},
+	}
+
+	rep0Count1 := &Timestamp{
+		ReplicaID: uuid.UUID{},
+		Counter:   Counter{0x01},
+	}
+
+	testCases := []struct {
+		desc      string
+		ts        *Timestamp
+		compareTo *Timestamp
+	}{
+		{
+			desc:      "before comparison",
+			ts:        rep0Count0,
+			compareTo: rep0Count1,
+		},
+		{
+			desc:      "after comparison",
+			ts:        rep0Count1,
+			compareTo: rep0Count0,
+		},
+	}
+	for _, tC := range testCases {
+		tC := tC
+		t.Run(tC.desc, func(t *testing.T) {
+			updatedTo := tC.ts.Update(tC.compareTo)
+			assert.Equal(t, tC.ts.ReplicaID, updatedTo.ReplicaID)
+			assert.Equal(
+				t,
+				0,
+				CompareCounters(
+					rep0Count1.Counter.Increment(),
+					updatedTo.Counter,
+				),
+			)
+		})
+	}
+}

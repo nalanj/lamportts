@@ -32,6 +32,18 @@ func (t *Timestamp) Next() *Timestamp {
 	}
 }
 
+// Update compares the current timestamp to the comparison timestamp and
+// returns the greater of the comparison or the current plus a tick
+func (t *Timestamp) Update(compareTo *Timestamp) *Timestamp {
+	if CompareCounters(t.Counter, compareTo.Counter) < 0 {
+		return &Timestamp{
+			ReplicaID: t.ReplicaID,
+			Counter:   compareTo.Counter.Increment(),
+		}
+	}
+	return t.Next()
+}
+
 // Compare returns > 0 if a > b, < 0 if a < b, or 0 if a == b
 func Compare(a, b *Timestamp) int {
 	counterCompare := CompareCounters(a.Counter, b.Counter)
@@ -40,10 +52,4 @@ func Compare(a, b *Timestamp) int {
 		return bytes.Compare(a.ReplicaID[:], b.ReplicaID[:])
 	}
 	return counterCompare
-}
-
-// Update compares the current timestamp to the comparison timestamp and
-// returns the greater of the comparison or the current plus a tick
-func (t *Timestamp) Update(compareTo *Timestamp) *Timestamp {
-	return t.Next()
 }
